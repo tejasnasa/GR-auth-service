@@ -1,0 +1,13 @@
+- dont use camelcase in db names, use lowercase only
+
+- use pino instead of morgan
+
+- appRouter --> masterRouter
+
+- look into OTP
+
+- auth protected middleware
+
+- export initial user data
+
+- data flow diagram chart (eraser.io)
