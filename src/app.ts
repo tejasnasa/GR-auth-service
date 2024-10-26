@@ -1,18 +1,17 @@
 import express from "express";
 import { config } from "dotenv";
-import morgan from "morgan";
-import appRouter from "./routes/router";
+import { customLogger } from "./utils/logger";
+import { pinoHttp } from "pino-http";
+import masterRouter from "./routes/masterRouter";
 
 config();
-export const JWT_SECRET = process.env.JWT_SECRET;
 
 const app = express();
 
 app.use(express.json());
 
-//remove later
-app.use(morgan("dev"));
+app.use(customLogger);
 
-app.use("/api/v1", appRouter);
+app.use("/api/v1", masterRouter);
 
 export default app;
