@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { hash } from "bcrypt";
 import { prisma } from "../index";
 import { createToken } from "../utils/jwt";
+import { ServiceResponse } from "../models/serviceResponse";
 
 export const signup = async (req: any, res: any, next: any) => {
   try {
@@ -12,7 +13,9 @@ export const signup = async (req: any, res: any, next: any) => {
     });
 
     if (existingUser) {
-      return res.status(400).json({ message: "Phone number already exists" });
+      return res
+        .status(400)
+        .json(ServiceResponse.failed("Phone number already exists"));
     }
 
     const hashedPassword = await hash(password, 10);
@@ -34,11 +37,14 @@ export const signup = async (req: any, res: any, next: any) => {
       maxAge: 3600000,
     });
 
-    return res
-      .status(201)
-      .json({ message: "User created successfully", token, user: newUser });
+    return res.status(201).json(
+      ServiceResponse.success("User created successfully", {
+        token,
+        user: newUser,
+      })
+    );
   } catch (error) {
     console.log(error);
-    return res.status(400).json({ message: "Error creating user" });
+    return res.status(400).json(ServiceResponse.failed("Error creating user"));
   }
 };
