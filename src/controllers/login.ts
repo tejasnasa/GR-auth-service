@@ -15,9 +15,7 @@ export const login = async (req: any, res: any, next: any) => {
     });
 
     if (!user) {
-      return res
-        .status(401)
-        .json(ServiceResponse.failed("Phone number doesn't exist"));
+      return res.status(401).json(ServiceResponse.failed("Invalid password"));
     }
 
     const isPasswordCorrect = await compare(password, user.password);
@@ -26,17 +24,11 @@ export const login = async (req: any, res: any, next: any) => {
       return res.status(401).json(ServiceResponse.failed("Invalid password"));
     }
 
-    const token = createToken({ id: user.id, phonenum: user.phonenum });
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 3600000,
-    });
+    const token = createToken({ phonenum: user.phonenum });
 
     return res.status(200).json(
       ServiceResponse.success("Sign-in successful", {
-        token,
+        accessToken: token,
         user: {
           phonenum: user.phonenum,
           department: user.department,

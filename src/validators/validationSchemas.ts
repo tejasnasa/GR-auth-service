@@ -36,7 +36,7 @@ export const signupSchema = z.object({
     .number()
     .int()
     .min(1, { message: "Department must be between 1 and 6" })
-    .max(6, { message: "Department must be between 1 and 6" }),
+    .max(7, { message: "Department must be between 1 and 6" }),
   role: z
     .number()
     .int()

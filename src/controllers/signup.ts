@@ -14,7 +14,7 @@ export const signup = async (req: any, res: any, next: any) => {
 
     if (existingUser) {
       return res
-        .status(400)
+        .status(401)
         .json(ServiceResponse.failed("Phone number already exists"));
     }
 
@@ -29,17 +29,11 @@ export const signup = async (req: any, res: any, next: any) => {
       },
     });
 
-    const token = createToken({ id: newUser.id, phonenum: newUser.phonenum });
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 3600000,
-    });
+    const token = createToken({ phonenum: newUser.phonenum });
 
     return res.status(201).json(
       ServiceResponse.success("User created successfully", {
-        token,
+        accessToken: token,
         user: newUser,
       })
     );

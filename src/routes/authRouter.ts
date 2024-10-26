@@ -4,12 +4,17 @@ import { login } from "../controllers/login";
 import { signup } from "../controllers/signup";
 import { validateLogin } from "../validators/login-validators";
 import { validateSignup } from "../validators/signup-validators";
-import { signout } from "../controllers/signout";
+import { verifyToken } from "../utils/jwt";
+import { authVerify } from "../utils/authVerify";
 
 const authRouter = Router();
 
 authRouter.post("/login", validateLogin, login);
 authRouter.post("/signup", validateSignup, signup);
-authRouter.post("/signout", signout);
+
+// protected routes
+authRouter.get("/prot", authVerify, (req: any, res: any) => {
+  res.json({ message: "This is a protected route", user: req.user });
+});
 
 export default authRouter;
