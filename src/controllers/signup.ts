@@ -6,22 +6,23 @@ import { ServiceResponse } from "../models/serviceResponse";
 
 export const signup = async (req: any, res: any, next: any) => {
   try {
-    const { phonenum, password, department, role } = req.body;
+    const { email, phonenum, password, department, role } = req.body;
 
     const existingUser = await prisma.user.findUnique({
-      where: { phonenum },
+      where: { email },
     });
 
     if (existingUser) {
       return res
         .status(401)
-        .json(ServiceResponse.failed("Phone number already exists"));
+        .json(ServiceResponse.failed("Email already exists"));
     }
 
     const hashedPassword = await hash(password, 10);
 
     const newUser = await prisma.user.create({
       data: {
+        email,
         phonenum,
         password: hashedPassword,
         department,
@@ -29,7 +30,7 @@ export const signup = async (req: any, res: any, next: any) => {
       },
     });
 
-    const token = createToken({ phonenum: newUser.phonenum });
+    const token = createToken({ email: newUser.email});
 
     return res.status(201).json(
       ServiceResponse.success("User created successfully", {

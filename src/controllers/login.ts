@@ -5,32 +5,35 @@ import { createToken } from "../utils/jwt";
 import { ServiceResponse } from "../models/serviceResponse";
 
 export const login = async (req: any, res: any, next: any) => {
-  const { phonenum, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     const user = await prisma.user.findUnique({
       where: {
-        phonenum: phonenum,
+        email: email,
       },
     });
 
     if (!user) {
-      return res.status(401).json(ServiceResponse.failed("Invalid password"));
+      return res.status(401).json(ServiceResponse.failed("User doesn't exist"));
     }
 
     const isPasswordCorrect = await compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return res.status(401).json(ServiceResponse.failed("Invalid password"));
+      return res
+        .status(401)
+        .json(ServiceResponse.failed("Invalid credentials"));
     }
 
-    const token = createToken({ phonenum: user.phonenum });
+    const token = createToken({ email: user.email });
 
     return res.status(200).json(
       ServiceResponse.success("Sign-in successful", {
         accessToken: token,
         user: {
           phonenum: user.phonenum,
+          email: user.email,
           department: user.department,
           role: user.role,
         },

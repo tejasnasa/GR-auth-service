@@ -1,22 +1,20 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  phonenum: z
-    .number()
-    .int()
-    .refine((num) => String(num).length === 10, {
-      message: "Phone number must be exactly 10 digits",
-    }),
+  email: z.string().email({ message: "Invalid email address" }),
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters long" }),
 });
 
 export const signupSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
   phonenum: z
-    .number()
-    .int({ message: "Phone number must be an integer" })
-    .refine((num) => String(num).length === 10, {
+    .string()
+    .refine((num) => /^\d+$/.test(num), {
+      message: "Phone number must consist of only digits",
+    })
+    .refine((num) => num.length === 10, {
       message: "Phone number must be exactly 10 digits",
     }),
   password: z
@@ -32,14 +30,6 @@ export const signupSchema = z.object({
     .regex(/(?=.*[!@#$%^&*(),.?":{}|<>])/, {
       message: "Password must contain at least one special character",
     }),
-  department: z
-    .number()
-    .int()
-    .min(1, { message: "Department must be between 1 and 6" })
-    .max(7, { message: "Department must be between 1 and 6" }),
-  role: z
-    .number()
-    .int()
-    .min(1, { message: "Role must be between 1 and 4" })
-    .max(4, { message: "Role must be between 1 and 4" }),
+  department: z.number().int().min(1).max(7),
+  role: z.number().int().min(1).max(4),
 });
