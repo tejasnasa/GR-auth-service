@@ -67,7 +67,7 @@ export class ServiceResponse<T = null> {
   static create<T>(message: string, responseObject?: T): ServiceResponse<T> {
     const data = responseObject !== undefined ? responseObject : (null as T);
     return new ServiceResponse<T>(
-      ResponseStatus.Failed,
+      ResponseStatus.Success,
       message,
       data,
       StatusCodes.CREATED
