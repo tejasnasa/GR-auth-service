@@ -4,7 +4,7 @@ import { login } from "../controllers/login";
 import { signup } from "../controllers/signup";
 import { validateLogin } from "../validators/login-validators";
 import { validateSignup } from "../validators/signup-validators";
-import { verifyToken } from "../utils/jwt";
+import { verifyToken } from "../utils/jwtConfig";
 import { authVerify } from "../utils/authMiddleware";
 
 const authRouter = Router();

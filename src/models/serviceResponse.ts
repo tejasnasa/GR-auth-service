@@ -53,4 +53,24 @@ export class ServiceResponse<T = null> {
       StatusCodes.OK
     );
   }
+
+  static exists<T>(message: string, responseObject?: T): ServiceResponse<T> {
+    const data = responseObject !== undefined ? responseObject : (null as T);
+    return new ServiceResponse<T>(
+      ResponseStatus.Failed,
+      message,
+      data,
+      StatusCodes.UNAUTHORIZED
+    );
+  }
+
+  static create<T>(message: string, responseObject?: T): ServiceResponse<T> {
+    const data = responseObject !== undefined ? responseObject : (null as T);
+    return new ServiceResponse<T>(
+      ResponseStatus.Failed,
+      message,
+      data,
+      StatusCodes.CREATED
+    );
+  }
 }

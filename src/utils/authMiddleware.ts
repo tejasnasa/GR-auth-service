@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { verifyToken } from "./jwt";
+import { verifyToken } from "./jwtConfig";
 import { ServiceResponse } from "../models/serviceResponse";
 
 export const authVerify = (req: any, res: any, next: any) => {
