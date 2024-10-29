@@ -22,7 +22,7 @@ export const signup = async (
     });
 
     if (existingUser) {
-      res.status(401).json(ServiceResponse.exists("Email already exists"));
+      res.status(401).json(ServiceResponse.unauthorized("Email already exists"));
       return;
     }
 
@@ -57,11 +57,11 @@ export const signup = async (
     }
 
     await deleteFirebaseUser(firebaseUser);
-    res.status(400).json(ServiceResponse.failed("Verification not completed."));
+    res.status(400).json(ServiceResponse.badrequest("Verification not completed."));
     return;
   } catch (error) {
     console.log(error);
-    res.status(400).json(ServiceResponse.failed("Error creating user"));
+    res.status(500).json(ServiceResponse.failed("Error creating user"));
     return;
   }
 };

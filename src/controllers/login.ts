@@ -19,21 +19,21 @@ export const login = async (
     });
 
     if (!user) {
-      res.status(401).json(ServiceResponse.failed("User doesn't exist"));
+      res.status(401).json(ServiceResponse.unauthorized("User doesn't exist"));
       return;
     }
 
     const isPasswordCorrect = await compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      res.status(401).json(ServiceResponse.failed("Invalid credentials"));
+      res.status(401).json(ServiceResponse.unauthorized("Invalid credentials"));
       return;
     }
 
     const token = createToken({ email: user.email });
 
-    res.status(200).json(
-      ServiceResponse.success("Sign-in successful", {
+    res.status(201).json(
+      ServiceResponse.create("Sign-in successful", {
         accessToken: token,
         user: {
           phonenum: user.phonenum,

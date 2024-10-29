@@ -54,7 +54,7 @@ export class ServiceResponse<T = null> {
     );
   }
 
-  static exists<T>(message: string, responseObject?: T): ServiceResponse<T> {
+  static unauthorized<T>(message: string, responseObject?: T): ServiceResponse<T> {
     const data = responseObject !== undefined ? responseObject : (null as T);
     return new ServiceResponse<T>(
       ResponseStatus.Failed,
@@ -71,6 +71,16 @@ export class ServiceResponse<T = null> {
       message,
       data,
       StatusCodes.CREATED
+    );
+  }
+
+  static badrequest<T>(message: string, responseObject?: T): ServiceResponse<T> {
+    const data = responseObject !== undefined ? responseObject : (null as T);
+    return new ServiceResponse<T>(
+      ResponseStatus.Failed,
+      message,
+      data,
+      StatusCodes.BAD_REQUEST
     );
   }
 }

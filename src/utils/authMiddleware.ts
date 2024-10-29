@@ -6,7 +6,7 @@ export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
   const token = req.headers["authorization"];
 
   if (!token) {
-    res.status(401).json(ServiceResponse.failed("No token provided"));
+    res.status(401).json(ServiceResponse.unauthorized("No token provided"));
     return;
   }
 
@@ -15,7 +15,7 @@ export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
     req.user = decoded;
     next();
   } catch (error) {
-    res.status(401).json(ServiceResponse.failed("Invalid token"));
+    res.status(401).json(ServiceResponse.unauthorized("Invalid token"));
     return;
   }
 };
