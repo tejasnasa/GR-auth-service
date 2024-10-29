@@ -9,7 +9,11 @@ import {
   pollEmailVerification,
 } from "./firebaseControllers";
 
-export const signup = async (req: any, res: any, next: any) => {
+export const signup = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const { email, phonenum, password, department, role } = req.body;
 
   try {
@@ -18,9 +22,8 @@ export const signup = async (req: any, res: any, next: any) => {
     });
 
     if (existingUser) {
-      return res
-        .status(401)
-        .json(ServiceResponse.exists("Email already exists"));
+      res.status(401).json(ServiceResponse.exists("Email already exists"));
+      return;
     }
 
     const hashedPassword = await hash(password, 10);
@@ -44,20 +47,21 @@ export const signup = async (req: any, res: any, next: any) => {
       const token = createToken({ email: newUser.email });
       await deleteFirebaseUser(firebaseUser);
 
-      return res.status(201).json(
+      res.status(201).json(
         ServiceResponse.create("User created successfully", {
           accessToken: token,
           user: newUser,
         })
       );
+      return;
     }
 
     await deleteFirebaseUser(firebaseUser);
-    return res
-      .status(400)
-      .json(ServiceResponse.failed("Verification not completed."));
+    res.status(400).json(ServiceResponse.failed("Verification not completed."));
+    return;
   } catch (error) {
     console.log(error);
-    return res.status(400).json(ServiceResponse.failed("Error creating user"));
+    res.status(400).json(ServiceResponse.failed("Error creating user"));
+    return;
   }
 };

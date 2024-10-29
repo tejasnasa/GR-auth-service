@@ -2,16 +2,22 @@ import { Request, Response, NextFunction } from "express";
 import { loginSchema } from "./validationSchemas";
 import { z } from "zod";
 
-export const validateLogin = (req: any, res: any, next: any) => {
+export const validateLogin = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     loginSchema.parse(req.body);
     next();
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res
+      res
         .status(400)
         .json({ message: "Validation error", errors: error.errors });
+      return;
     }
-    return res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error" });
+    return;
   }
 };

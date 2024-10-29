@@ -4,7 +4,11 @@ import { compare } from "bcrypt";
 import { createToken } from "../utils/jwtConfig";
 import { ServiceResponse } from "../models/serviceResponse";
 
-export const login = async (req: any, res: any, next: any) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const { email, password } = req.body;
 
   try {
@@ -15,20 +19,20 @@ export const login = async (req: any, res: any, next: any) => {
     });
 
     if (!user) {
-      return res.status(401).json(ServiceResponse.failed("User doesn't exist"));
+      res.status(401).json(ServiceResponse.failed("User doesn't exist"));
+      return;
     }
 
     const isPasswordCorrect = await compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return res
-        .status(401)
-        .json(ServiceResponse.failed("Invalid credentials"));
+      res.status(401).json(ServiceResponse.failed("Invalid credentials"));
+      return;
     }
 
     const token = createToken({ email: user.email });
 
-    return res.status(200).json(
+    res.status(200).json(
       ServiceResponse.success("Sign-in successful", {
         accessToken: token,
         user: {
@@ -39,10 +43,10 @@ export const login = async (req: any, res: any, next: any) => {
         },
       })
     );
+    return;
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .json(ServiceResponse.failed("Internal server error"));
+    res.status(500).json(ServiceResponse.failed("Internal server error"));
+    return;
   }
 };
