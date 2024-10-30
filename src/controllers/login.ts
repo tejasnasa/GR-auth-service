@@ -32,8 +32,8 @@ export const login = async (
 
     const token = createToken({ email: user.email });
 
-    res.status(201).json(
-      ServiceResponse.create("Sign-in successful", {
+    res.status(200).json(
+      ServiceResponse.success("Sign-in successful", {
         accessToken: token,
         user: {
           phonenum: user.phonenum,

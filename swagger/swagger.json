@@ -25,6 +25,7 @@
       "post": {
         "tags": ["Authorization"],
         "summary": "User signup",
+        "description": "Sign up endpoint validated using zod, and saved using prisma in postgres server. Email is verified via email before data is saved in the database.",
         "requestBody": {
           "required": true,
           "content": {
@@ -79,18 +80,26 @@
                       "properties": {
                         "accessToken": {
                           "type": "string",
-                          "example": "your_jwt_token"
+                          "example": "eregtrerfefgbrgfbggrr..."
                         },
                         "user": {
                           "type": "object",
                           "properties": {
-                            "email": {
+                            "id": {
                               "type": "string",
-                              "example": "user@example.com"
+                              "example": "rwewrhhoui..."
                             },
                             "phonenum": {
                               "type": "string",
                               "example": "1234567890"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "user@example.com"
+                            },
+                            "password": {
+                              "type": "string",
+                              "example": "realFR45$"
                             },
                             "department": {
                               "type": "integer",
@@ -99,10 +108,18 @@
                             "role": {
                               "type": "integer",
                               "example": 3
+                            },
+                            "created_at": {
+                              "type": "string",
+                              "example": "2024-10-30T03:24:29.264Z"
                             }
                           }
                         }
                       }
+                    },
+                    "statusCode": {
+                      "type": "number",
+                      "example": 201
                     }
                   }
                 }
@@ -144,6 +161,10 @@
                           }
                         }
                       }
+                    },
+                    "statusCode": {
+                      "type": "number",
+                      "example": 400
                     }
                   }
                 }
@@ -167,6 +188,10 @@
                     },
                     "responseObject": {
                       "type": "null"
+                    },
+                    "statusCode": {
+                      "type": "number",
+                      "example": 401
                     }
                   }
                 }
@@ -174,27 +199,7 @@
             }
           },
           "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Error creating user"
-                    },
-                    "responseObject": {
-                      "type": "null"
-                    }
-                  }
-                }
-              }
-            }
+            "description": "Internal server error"
           }
         }
       }
@@ -203,6 +208,7 @@
       "post": {
         "tags": ["Authorization"],
         "summary": "User login",
+        "description": "Log in endpoint validated using zod, and saved using prisma in postgres server.",
         "requestBody": {
           "required": true,
           "content": {
@@ -226,7 +232,7 @@
         },
         "responses": {
           "200": {
-            "description": "Sign-in successful",
+            "description": "User logged in successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -245,7 +251,7 @@
                       "properties": {
                         "accessToken": {
                           "type": "string",
-                          "example": "your_jwt_token"
+                          "example": "eregtrerfefgbrgfbggrr..."
                         },
                         "user": {
                           "type": "object",
@@ -269,6 +275,10 @@
                           }
                         }
                       }
+                    },
+                    "statusCode": {
+                      "type": "number",
+                      "example": 200
                     }
                   }
                 }
@@ -310,6 +320,10 @@
                           }
                         }
                       }
+                    },
+                    "statusCode": {
+                      "type": "number",
+                      "example": 400
                     }
                   }
                 }
@@ -333,6 +347,10 @@
                     },
                     "responseObject": {
                       "type": "null"
+                    },
+                    "statusCode": {
+                      "type": "number",
+                      "example": 401
                     }
                   }
                 }
@@ -340,27 +358,7 @@
             }
           },
           "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal server error"
-                    },
-                    "responseObject": {
-                      "type": "null"
-                    }
-                  }
-                }
-              }
-            }
+            "description": "Internal server error"
           }
         }
       }
@@ -369,9 +367,22 @@
       "get": {
         "tags": ["Default"],
         "summary": "Protected route (example)",
+        "description": "Access this route only with a valid JWT token in the 'Authorization' header.",
         "security": [
           {
             "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <your_jwt_token>"
+            },
+            "description": "JWT token with 'Bearer' prefix"
           }
         ],
         "responses": {
@@ -392,6 +403,14 @@
                         "email": {
                           "type": "string",
                           "example": "user@example.com"
+                        },
+                        "iat": {
+                          "type": "number",
+                          "example": 1730260067
+                        },
+                        "exp": {
+                          "type": "number",
+                          "example": 1730864867
                         }
                       }
                     }
@@ -401,27 +420,7 @@
             }
           },
           "401": {
-            "description": "No token provided or Invalid token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "No token provided"
-                    },
-                    "responseObject": {
-                      "type": "null"
-                    }
-                  }
-                }
-              }
-            }
+            "description": "Unauthorized: No token provided or Invalid token"
           }
         }
       }
