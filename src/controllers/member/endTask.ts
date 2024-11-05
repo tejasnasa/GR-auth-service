@@ -8,7 +8,7 @@ export const endTask = async (
   next: NextFunction
 ): Promise<void> => {
   const { taskId } = req.body;
-  const userId = req.userId;
+  const { userId } = req.user;
 
   try {
     const taskProgress = await prisma.taskProgress.findFirst({

@@ -12,7 +12,6 @@ export const viewTasks = async (
   try {
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { department: true, role: true },
     });
 
     if (!user) {
