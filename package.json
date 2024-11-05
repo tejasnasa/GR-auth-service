@@ -1,9 +1,12 @@
 {
   "name": "gr-auth",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "auth.js",
+  "type": "module",
+  "resolveJsonModule": true,
+  "esModuleInterop": true,
   "scripts": {
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\" "
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/controllers/googleAuth/auth.js\" "
   },
   "keywords": [],
   "author": "",
@@ -14,12 +17,16 @@
     "@types/express": "^5.0.0",
     "bcrypt": "^5.1.1",
     "concurrently": "^9.0.1",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "express-session": "^1.18.1",
     "firebase": "^11.0.1",
     "firebase-admin": "^12.7.0",
+    "googleapis": "^144.0.0",
     "http-status-codes": "^2.3.0",
     "jsonwebtoken": "^9.0.2",
+    "path": "^0.12.7",
     "pino": "^9.5.0",
     "pino-http": "^10.3.0",
     "pino-pretty": "^11.3.0",
@@ -30,6 +37,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.9.0",
     "@types/swagger-ui-express": "^4.1.6",
     "@types/yamljs": "^0.2.34",
     "typescript": "^5.6.3"

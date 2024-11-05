@@ -36,7 +36,7 @@ export const signup = async (
     if (verified) {
       const newUser = await prisma.user.create({
         data: {
-          email,
+          email,  
           phonenum,
           password: hashedPassword,
           department,
