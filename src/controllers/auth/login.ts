@@ -34,7 +34,6 @@ export const login = async (
     const token = createToken({
       userId: user.id,
       isAdmin,
-      department: user.department,
     });
 
     res.status(200).json(

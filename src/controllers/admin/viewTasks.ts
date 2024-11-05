@@ -24,7 +24,7 @@ export const viewTasks = async (
       .json(ServiceResponse.success("Tasks retrieved successfully", { tasks }));
   } catch (error) {
     console.log(error);
-    res.status(500).json(ServiceResponse.failed("Error retrieving tasks"));
+    res.status(500).json(ServiceResponse.failed("Internal server error"));
     return;
   }
 };

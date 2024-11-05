@@ -8,7 +8,7 @@ export const beginTask = async (
   next: NextFunction
 ): Promise<void> => {
   const { taskId } = req.body;
-  const { userId, department } = req.user;
+  const { userId } = req.user;
 
   try {
     const task = await prisma.task.findUnique({
@@ -22,8 +22,23 @@ export const beginTask = async (
       return;
     }
 
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user || !user.department) {
+      res
+        .status(404)
+        .json(ServiceResponse.notFound("User department not found"));
+      return;
+    }
+
     const isUserAssigned = task.direct_assign?.includes(userId);
-    const isUserInDepartment = task.department_assign?.includes(department);
+    const isUserInDepartment = task.department_assign?.includes(
+      user.department
+    );
     const isGlobalTask = task.global_assign;
 
     if (!isUserAssigned && !isUserInDepartment && !isGlobalTask) {

@@ -38,7 +38,7 @@ export const createTask = async (
     return;
   } catch (error) {
     console.log(error);
-    res.status(500).json(ServiceResponse.failed("Error creating task"));
+    res.status(500).json(ServiceResponse.failed("Internal server error"));
     return;
   }
 };

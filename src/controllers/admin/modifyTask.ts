@@ -46,7 +46,7 @@ export const modifyTask = async (
     );
   } catch (error) {
     console.log(error);
-    res.status(500).json(ServiceResponse.failed("Error modifying task"));
+    res.status(500).json(ServiceResponse.failed("Internal server error"));
     return;
   }
 };

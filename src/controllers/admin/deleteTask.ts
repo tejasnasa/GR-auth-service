@@ -25,7 +25,7 @@ export const deleteTask = async (
     res.status(200).json(ServiceResponse.success("Task deleted successfully"));
   } catch (error) {
     console.log(error);
-    res.status(500).json(ServiceResponse.failed("Error deleting task"));
+    res.status(500).json(ServiceResponse.failed("Internal server error"));
     return;
   }
 };

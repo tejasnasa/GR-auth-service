@@ -51,7 +51,6 @@ export const signup = async (
       const token = createToken({
         userId: newUser.id,
         isAdmin,
-        department: newUser.department,
       });
       await deleteFirebaseUser(firebaseUser);
 
@@ -71,7 +70,7 @@ export const signup = async (
     return;
   } catch (error) {
     console.log(error);
-    res.status(500).json(ServiceResponse.failed("Error creating user"));
+    res.status(500).json(ServiceResponse.failed("Internal server error"));
     return;
   }
 };
