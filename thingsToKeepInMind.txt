@@ -11,3 +11,48 @@
 - export initial user data
 
 - data flow diagram chart (eraser.io)
+
+
+
+MODELS
+
+Task
+
+- title string
+- description string?
+- createdBy string
+- directAssig string array ?
+- departmentAssign int array ?
+- globalAssign default(false)
+- createdAt
+- updatedAt
+- deadline
+- TaskProgress[] relation
+
+
+Task Progress
+- memberid
+- taskid
+- status default(in_progress) or complete
+- startDate
+- endDate
+
+
+API ENDPOINTS
+
+Admin
+
+- create task
+- modify task
+- delete task
+
+Member
+
+- VIEW TASKS
+check for direct (using id), dept (using dept int array), global
+
+- CHOOSE TASKS
+create entry in TaskProgress table
+
+- COMPLETE TASK
+change status to complete in TaskProgress table

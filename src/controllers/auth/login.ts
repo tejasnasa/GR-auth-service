@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { prisma } from "../index";
+import { prisma } from "../../index";
 import { compare } from "bcrypt";
-import { createToken } from "../utils/jwtConfig";
-import { ServiceResponse } from "../models/serviceResponse";
+import { createToken } from "../../utils/jwtConfig";
+import { ServiceResponse } from "../../models/serviceResponse";
 
 export const login = async (
   req: Request,

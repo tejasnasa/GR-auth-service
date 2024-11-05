@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { hash } from "bcrypt";
-import { prisma } from "../index";
-import { createToken } from "../utils/jwtConfig";
-import { ServiceResponse } from "../models/serviceResponse";
+import { prisma } from "../../index";
+import { createToken } from "../../utils/jwtConfig";
+import { ServiceResponse } from "../../models/serviceResponse";
 import {
   createFirebaseUser,
   deleteFirebaseUser,
@@ -22,7 +22,9 @@ export const signup = async (
     });
 
     if (existingUser) {
-      res.status(401).json(ServiceResponse.unauthorized("Email already exists"));
+      res
+        .status(401)
+        .json(ServiceResponse.unauthorized("Email already exists"));
       return;
     }
 
@@ -57,7 +59,9 @@ export const signup = async (
     }
 
     await deleteFirebaseUser(firebaseUser);
-    res.status(400).json(ServiceResponse.badrequest("Verification not completed."));
+    res
+      .status(400)
+      .json(ServiceResponse.badrequest("Verification not completed."));
     return;
   } catch (error) {
     console.log(error);

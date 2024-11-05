@@ -4,7 +4,7 @@ import {
   deleteUser,
   getAuth,
 } from "firebase/auth";
-import { firebaseApp } from "../utils/firebaseConfig";
+import { firebaseApp } from "../../utils/firebaseConfig";
 
 const auth = getAuth(firebaseApp);
 
@@ -23,9 +23,14 @@ export const deleteFirebaseUser = async (firebaseUser: any) => {
   await deleteUser(firebaseUser);
 };
 
-export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+export const wait = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
-export const pollEmailVerification = async (firebaseUser: any, maxAttempts = 10, pollInterval = 10000) => {
+export const pollEmailVerification = async (
+  firebaseUser: any,
+  maxAttempts = 10,
+  pollInterval = 10000
+) => {
   let attempts = 0;
 
   while (attempts < maxAttempts) {
