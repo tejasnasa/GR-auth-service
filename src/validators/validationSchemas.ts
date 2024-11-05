@@ -33,3 +33,28 @@ export const signupSchema = z.object({
   department: z.number().int().min(1).max(7),
   role: z.number().int().min(1).max(4),
 });
+
+export const createTaskSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().optional(),
+  direct_assign: z.array(z.string()),
+  department_assign: z.array(z.number()),
+  global_assign: z.boolean(),
+  deadline: z.string().refine((date) => !isNaN(Date.parse(date)), {
+    message: "Invalid date format",
+  }),
+});
+
+export const modifyTaskSchema = z.object({
+  title: z.string().min(1, "Title is required").optional(),
+  description: z.string().optional(),
+  direct_assign: z.array(z.string()).optional(),
+  department_assign: z.array(z.number()).optional(),
+  global_assign: z.boolean().optional(),
+  deadline: z
+    .string()
+    .refine((date) => !isNaN(Date.parse(date)), {
+      message: "Invalid date format",
+    })
+    .optional(),
+});

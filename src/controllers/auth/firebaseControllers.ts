@@ -28,7 +28,7 @@ export const wait = (ms: number) =>
 
 export const pollEmailVerification = async (
   firebaseUser: any,
-  maxAttempts = 10,
+  maxAttempts = 30,
   pollInterval = 10000
 ) => {
   let attempts = 0;

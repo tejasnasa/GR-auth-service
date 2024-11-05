@@ -1,8 +1,8 @@
 import { Response, NextFunction } from "express";
-import { verifyToken } from "./jwtConfig";
+import { verifyToken } from "../utils/jwtConfig";
 import { ServiceResponse } from "../models/serviceResponse";
 
-export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
+export const adminCheck = (req: any, res: any, next: NextFunction) => {
   const token = req.headers["authorization"]?.split(" ")[1];
 
   if (!token) {
@@ -13,6 +13,9 @@ export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
   try {
     const decoded = verifyToken(token);
     req.user = decoded;
+    if (!decoded.isAdmin) {
+      return res.status(401).json({ message: "Access denied. Not an admin." });
+    }
     next();
   } catch (error) {
     res.status(401).json(ServiceResponse.unauthorized("Invalid token"));

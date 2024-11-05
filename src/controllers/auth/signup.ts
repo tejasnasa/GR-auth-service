@@ -46,7 +46,13 @@ export const signup = async (
         },
       });
 
-      const token = createToken({ email: newUser.email });
+      const isAdmin =
+        newUser.role === 1 || newUser.role === 2 || newUser.role === 3;
+      const token = createToken({
+        userId: newUser.id,
+        isAdmin,
+        department: newUser.department,
+      });
       await deleteFirebaseUser(firebaseUser);
 
       res.status(201).json(

@@ -30,7 +30,12 @@ export const login = async (
       return;
     }
 
-    const token = createToken({ email: user.email });
+    const isAdmin = user.role === 1 || user.role === 2 || user.role === 3;
+    const token = createToken({
+      userId: user.id,
+      isAdmin,
+      department: user.department,
+    });
 
     res.status(200).json(
       ServiceResponse.success("Sign-in successful", {
@@ -45,7 +50,7 @@ export const login = async (
     );
     return;
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(500).json(ServiceResponse.failed("Internal server error"));
     return;
   }

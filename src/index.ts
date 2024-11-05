@@ -14,5 +14,5 @@ prisma
     });
   })
   .catch((err) => {
-    console.error("Failed to connect to the database:", err);
+    console.log("Failed to connect to the database:", err);
   });
